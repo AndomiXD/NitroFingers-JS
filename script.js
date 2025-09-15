@@ -37,3 +37,7 @@ const newGame = () => {
 }
 
 console.log(newGame())
+
+document.getElementById("newGameButton").addEventListener("click", () => {
+  newGame()
+})
