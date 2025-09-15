@@ -2,8 +2,10 @@
 console.log("script is on")
 //variables
 const wordsLength = words.length
-console.log(words)
 const gameDuration = 60 * 1000 //60 milliseconds * 1000 = 60 seconds
+window.gameStart = null
+window.timer = null
+window.pauseTime = 0
 
 //generate random words and their random index, -1 because the location/index always starts at 0
 const randomWord = () => {
@@ -19,23 +21,43 @@ const displayWord = (word) => {
 }
 
 //new class creating function
-const addClass = (element, name) => {
+const createClass = (element, name) => {
   element.className = element.className + " " + name
+}
+
+//delete class creating function
+const deleteClass = (element, name) => {
+  element.className = element.className.replace(name, "")
+}
+
+//end game when timer runs our
+const gameOver = () => {
+  createClass(document.getElementById("game"), "over")
 }
 
 //initialise a new game by adding the randomly generated words to the HTML
 const newGame = () => {
-  document.getElementById("words").innerHTML = ""
+  document.getElementById("words").innerHTML = "" //clear all words
   for (let i = 0; i < 100; i++) {
     // number of words to be displayed is controlled by i < n
     document.getElementById("words").innerHTML += displayWord(randomWord())
   }
-  addClass(document.querySelector(".word"), "latest")
-  addClass(document.querySelector(".letter"), "latest")
+  createClass(document.querySelector(".word"), "latest")
+  createClass(document.querySelector(".letter"), "latest")
   document.getElementById("duration").innerHTML =
     "Timer: " + gameDuration / 1000 + "s"
 }
 
+document.getElementById("game").addEventListener("keydown", (event) => {
+  const press = event.key
+  const latestLetter = document.querySelector(".letter.latest")
+  const expectedLetter = latestLetter.innerHTML
+
+  console.log({ press, expectedLetter })
+})
+
 document.getElementById("newGameButton").addEventListener("click", () => {
   newGame()
 })
+
+newGame()
