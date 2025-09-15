@@ -1,9 +1,3 @@
-/*learnt how to define colours as variable instead of typing the same colour each time: https://stackoverflow.com/questions/1875852/how-can-i-define-colors-as-variables-in-css */
-:root {
-  --main-text: #d1d0c5;
-  --typed-text: ;
-}
-
 h1 {
   display: flex;
   justify-content: center;
@@ -17,5 +11,5 @@ body {
   background-color: #323437;
 }
 p {
-  color: var(--main-text);
+  color: #d1d0c5;
 }
