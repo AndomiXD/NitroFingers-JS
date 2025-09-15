@@ -2,14 +2,27 @@ h1 {
   display: flex;
   justify-content: center;
   color: aqua;
+  font-family: "Helvetica", sans-serif;
 }
 body {
-  display: flex;
-
-  flex-direction: column;
-
+  font-family: "Helvetica", sans-serif;
   background-color: #323437;
+  color: #ffffff;
+  font-size: 1.4rem;
+  width: 600px;
+  margin: 50px auto;
 }
 p {
   color: #d1d0c5;
+}
+
+div.word {
+  display: inline-block;
+  font-family: "Helvetica", monospace;
+  margin: 0 7px;
+}
+
+#newGameButton {
+  border: none;
+  border-radius: 5px;
 }
