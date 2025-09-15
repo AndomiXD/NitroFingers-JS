@@ -36,8 +36,6 @@ const newGame = () => {
     "Timer: " + gameDuration / 1000 + "s"
 }
 
-console.log(newGame())
-
 document.getElementById("newGameButton").addEventListener("click", () => {
   newGame()
 })
