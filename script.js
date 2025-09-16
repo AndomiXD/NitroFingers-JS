@@ -1,4 +1,3 @@
-//-----------------------------------------------------
 console.log("script is on")
 //variables
 const wordsLength = words.length
@@ -21,18 +20,24 @@ const displayWord = (word) => {
     .join('</span><span class="letter">')}</span></div>`
 }
 
-//new class creating function (safe)
+//new class function that preventing duplicates
 const createClass = (element, name) => {
-  if (!element) return
-  const classes = (element.className || "").split(/\s+/).filter(Boolean)
-  if (!classes.includes(name)) classes.push(name)
+  if (!element) {
+    return
+  } // do nothing if the element is null
+  const classes = (element.className || "").split(/\s+/).filter(Boolean) // split the element current className string into an array of class names
+  if (!classes.includes(name)) {
+    classes.push(name)
+  }
   element.className = classes.join(" ")
 }
 
-//delete class creating function (safe)
+//delete class function that preventing duplicates
 const deleteClass = (element, name) => {
-  if (!element) return
-  const classes = (element.className || "").split(/\s+/).filter(Boolean)
+  if (!element) {
+    return
+  } // do nothing if the element is null
+  const classes = (element.className || "").split(/\s+/).filter(Boolean) // split the element current className string into an array of class names
   element.className = classes.filter((c) => c !== name).join(" ")
 }
 
@@ -55,16 +60,20 @@ const newGame = () => {
     wordsEl.innerHTML += displayWord(randomWord())
   }
   const firstWord = document.querySelector(".word")
-  if (firstWord) createClass(firstWord, "latest")
+  if (firstWord) {
+    createClass(firstWord, "latest")
+  }
   const firstLetter = document.querySelector(".letter")
-  if (firstLetter) createClass(firstLetter, "latest")
+  if (firstLetter) {
+    createClass(firstLetter, "latest")
+  }
 
   document.getElementById("duration").innerHTML = "Timer: " + gameDuration + "s"
   window.timer = null
   window.gameStart = null
 }
 
-document.getElementById("game").addEventListener("keyup", (event) => {
+document.getElementById("game").addEventListener("keydown", (event) => {
   const press = event.key
   let latestLetter = document.querySelector(".letter.latest")
   let latestWord = document.querySelector(".word.latest")
@@ -98,7 +107,10 @@ document.getElementById("game").addEventListener("keyup", (event) => {
     }, 1000)
   }
 
-  if (!latestWord && !spaceCheck && !backspaceCheck) return
+  // do nothing if it's literally nothing
+  if (!latestWord && !spaceCheck && !backspaceCheck) {
+    return
+  }
 
   //letter check
   if (letterCheck && lettersRegex.test(press)) {
@@ -114,9 +126,13 @@ document.getElementById("game").addEventListener("keyup", (event) => {
         createClass(latestLetter.nextSibling, "latest")
       }
     } else {
-      if (!latestWord) return
+      if (!latestWord) {
+        return
+      }
       const prevLatest = latestWord.querySelector(".letter.latest")
-      if (prevLatest) deleteClass(prevLatest, "latest")
+      if (prevLatest) {
+        deleteClass(prevLatest, "latest")
+      }
 
       let extraWrap = latestWord.querySelector(".extraLetters")
       if (!extraWrap) {
@@ -129,7 +145,9 @@ document.getElementById("game").addEventListener("keyup", (event) => {
       extraLetter.innerHTML = press
       extraLetter.className = "letter incorrect extra"
       const anyLatest = document.querySelector(".letter.latest")
-      if (anyLatest) deleteClass(anyLatest, "latest")
+      if (anyLatest) {
+        deleteClass(anyLatest, "latest")
+      }
       createClass(extraLetter, "latest")
 
       extraWrap.appendChild(extraLetter)
@@ -138,7 +156,9 @@ document.getElementById("game").addEventListener("keyup", (event) => {
 
   //  space input
   if (spaceCheck) {
-    if (!latestWord) return
+    if (!latestWord) {
+      return
+    }
 
     let wordToValidate = latestWord
     if (
@@ -162,11 +182,15 @@ document.getElementById("game").addEventListener("keyup", (event) => {
     // remove "latest" from the validated word and its latest letter
     deleteClass(wordToValidate, "latest")
     const currentLatestLetter = wordToValidate.querySelector(".letter.latest")
-    if (currentLatestLetter) deleteClass(currentLatestLetter, "latest")
+    if (currentLatestLetter) {
+      deleteClass(currentLatestLetter, "latest")
+    }
 
     // remove any extra letters for the word being left if the player added extra letters which are supposed to be incorrect
     const extras = wordToValidate.querySelector(".extraLetters")
-    if (extras) extras.remove()
+    if (extras) {
+      extras.remove()
+    }
     let next = null
     if (wordToValidate === latestWord) {
       next = latestWord.nextSibling
@@ -184,28 +208,37 @@ document.getElementById("game").addEventListener("keyup", (event) => {
 
     // make next the latest word and set its first letter as latest
     createClass(next, "latest")
-    if (next.firstChild) createClass(next.firstChild, "latest")
+    if (next.firstChild) {
+      createClass(next.firstChild, "latest")
+    }
   }
 
   // backspace input
   if (backspaceCheck) {
-    if (!latestWord) return
+    if (!latestWord) {
+      return
+    }
 
     const extraWrap = latestWord.querySelector(".extraLetters")
     if (extraWrap && extraWrap.lastChild) {
       const toRemove = extraWrap.lastChild
       const wasLatest = toRemove.className.includes("latest")
       extraWrap.removeChild(toRemove)
-      if (!extraWrap.hasChildNodes()) extraWrap.remove()
+      if (!extraWrap.hasChildNodes()) {
+        extraWrap.remove()
+      }
 
       if (wasLatest) {
         const newExtraLast = latestWord.querySelector(
           ".extraLetters:last-child .letter:last-child"
         )
-        if (newExtraLast) createClass(newExtraLast, "latest")
-        else {
+        if (newExtraLast) {
+          createClass(newExtraLast, "latest")
+        } else {
           const lastReal = latestWord.lastChild
-          if (lastReal) createClass(lastReal, "latest")
+          if (lastReal) {
+            createClass(lastReal, "latest")
+          }
         }
       }
     } else if (latestLetter && firstLetterCheck) {

@@ -3,7 +3,7 @@
 ### By: Munem Alkhalaf
 
 [GitHub](https://github.com/AndomiXD) |
-[Linkedin](https://www.linkedin.com/in/munem-alkhalaf-520a222a6/) 
+[Linkedin](https://www.linkedin.com/in/munem-alkhalaf-520a222a6/)
 
 ***
 
@@ -14,18 +14,19 @@
 * HTML5 (Hypertext Markup Language 5)
 * CSS (Cascading Style Sheet)
 * JavaScript
-  
+
 ***
 ### ***Screenshots***
-![NitroFingers' Layout](<Screenshot 2025-09-11 142803.jpg>)
+![NitroFingers' Layout](<Screenshot 2025-09-16 124530.jpg>)
 
 ### ***Future Updates***
 
-- [ ] TBA
-- [x] TBA
-- [x] ~~TBA~~
+- [ ] Player can select the time
+- [ ] Player can select number of words to be displayed
+- [ ] Blinking cursor for the current letter
+
 
 ***
 
 ### ***Credits***
-##### Groovy mind to help my sanity: [Spotify](https://open.spotify.com/)
+##### Staying groovy to help my sanity: [Spotify](https://open.spotify.com/)

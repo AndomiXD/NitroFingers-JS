@@ -3,6 +3,7 @@ h1 {
   justify-content: center;
   color: aqua;
   font-family: "Helvetica", sans-serif;
+  text-shadow: 1px 1px 8px aqua;
 }
 div#header {
   padding: 10px;
@@ -63,11 +64,15 @@ div#playbuttons {
   padding: 2px;
   color: #6e6e64;
   transition: all 0.2s ease;
+  user-select: none;
 }
 
 .letter.latest {
   font-size: 50px;
   color: #7486d3;
+  cursor: pointer;
+  caret-shape: underscore;
+  caret-color: #7486d3;
 }
 
 .letter.correct {
@@ -75,4 +80,27 @@ div#playbuttons {
 }
 .letter.incorrect {
   color: rgb(255, 0, 0);
+  font-size: 60px;
 }
+
+/* https://stackoverflow.com/questions/29836988/how-do-i-add-a-caret-down-wards-using-css-next-to-link-anchor-tag */
+
+/*
+.triangle {
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid black;
+}
+
+.over-triangle {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid white;
+  position: relative;
+  top: -10px;
+  left: -5px;
+} */
