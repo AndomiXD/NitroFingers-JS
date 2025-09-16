@@ -34,32 +34,14 @@ div.word {
 .letter {
   text-shadow: 1px 1px 8px black;
   padding: 2px;
+  color: #aaaa9d;
+  transition: all 0.2s ease;
 }
 
 .letter.correct {
   color: #ffffff;
+  transform: translateY(-2px);
 }
 .letter.incorrect {
   color: rgb(255, 0, 0);
-}
-
-#blinkCursor {
-  display: block;
-  width: 2px;
-  height: 60px;
-  background: #ffffff;
-  position: relative;
-  animation: blink 0.5s infinite;
-}
-
-@keyframes blink {
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
 }
