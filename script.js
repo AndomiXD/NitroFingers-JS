@@ -171,13 +171,25 @@ document.getElementById("game").addEventListener("keydown", (event) => {
       wordToValidate = latestWord.previousSibling
     }
 
-    // mark any not-correct letters in that word as incorrect
-    const validateLetter = [
-      ...wordToValidate.querySelectorAll(".letter:not(.correct)"),
-    ]
-    validateLetter.forEach((letter) => {
-      createClass(letter, "incorrect")
-    })
+    if (expectedLetter !== " ") {
+      // mark only the remaining letters (from latest onward) as incorrect
+      const wordToValidate = latestWord
+      let mark = false
+      wordToValidate.querySelectorAll(".letter") = () => {
+        if (letter === latestLetter) mark = true
+        if (mark && !letter.classList.contains("correct")) {
+          createClass(letter, "incorrect")
+        }
+      }
+
+      // move to the next word
+      deleteClass(latestWord, "latest")
+      createClass(latestWord.nextSibling, "latest")
+      if (latestLetter) {
+        deleteClass(latestLetter, "latest")
+      }
+      createClass(latestWord.nextSibling.firstChild, "latest")
+    }
 
     // remove "latest" from the validated word and its latest letter
     deleteClass(wordToValidate, "latest")
