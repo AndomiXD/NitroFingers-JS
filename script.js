@@ -2,7 +2,7 @@
 console.log("script is on")
 //variables
 const wordsLength = words.length
-const gameDuration = 5
+const gameDuration = 60
 window.gameStart = null
 window.timer = null
 window.pauseTime = 0
@@ -51,7 +51,7 @@ const newGame = () => {
 
   deleteClass(document.getElementById("game"), "over")
 
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 50; i++) {
     wordsEl.innerHTML += displayWord(randomWord())
   }
   const firstWord = document.querySelector(".word")
@@ -136,9 +136,56 @@ document.getElementById("game").addEventListener("keyup", (event) => {
     }
   }
 
-  //------
-  //paste here
-  //-----
+  //  space input
+  if (spaceCheck) {
+    if (!latestWord) return
+
+    let wordToValidate = latestWord
+    if (
+      latestLetter &&
+      latestWord &&
+      latestWord.firstChild &&
+      latestLetter === latestWord.firstChild &&
+      latestWord.previousSibling
+    ) {
+      wordToValidate = latestWord.previousSibling
+    }
+
+    // mark any not-correct letters in that word as incorrect
+    const validateLetter = [
+      ...wordToValidate.querySelectorAll(".letter:not(.correct)"),
+    ]
+    validateLetter.forEach((letter) => {
+      createClass(letter, "incorrect")
+    })
+
+    // remove "latest" from the validated word and its latest letter
+    deleteClass(wordToValidate, "latest")
+    const currentLatestLetter = wordToValidate.querySelector(".letter.latest")
+    if (currentLatestLetter) deleteClass(currentLatestLetter, "latest")
+
+    // remove any extra letters for the word being left if the player added extra letters which are supposed to be incorrect
+    const extras = wordToValidate.querySelector(".extraLetters")
+    if (extras) extras.remove()
+    let next = null
+    if (wordToValidate === latestWord) {
+      next = latestWord.nextSibling
+    } else {
+      next = latestWord
+    }
+
+    // make sure next word exists. if not, append one and check and display it as incorrect
+    if (!next) {
+      const temp = document.createElement("div")
+      temp.innerHTML = displayWord(randomWord())
+      next = temp.firstChild
+      document.getElementById("words").appendChild(next)
+    }
+
+    // make next the latest word and set its first letter as latest
+    createClass(next, "latest")
+    if (next.firstChild) createClass(next.firstChild, "latest")
+  }
 
   // backspace input
   if (backspaceCheck) {
