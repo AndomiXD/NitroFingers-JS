@@ -135,6 +135,62 @@ document.getElementById("game").addEventListener("keyup", (event) => {
       extraWrap.appendChild(extraLetter)
     }
   }
+
+  //------
+  //paste here
+  //-----
+
+  // backspace input
+  if (backspaceCheck) {
+    if (!latestWord) return
+
+    const extraWrap = latestWord.querySelector(".extraLetters")
+    if (extraWrap && extraWrap.lastChild) {
+      const toRemove = extraWrap.lastChild
+      const wasLatest = toRemove.className.includes("latest")
+      extraWrap.removeChild(toRemove)
+      if (!extraWrap.hasChildNodes()) extraWrap.remove()
+
+      if (wasLatest) {
+        const newExtraLast = latestWord.querySelector(
+          ".extraLetters:last-child .letter:last-child"
+        )
+        if (newExtraLast) createClass(newExtraLast, "latest")
+        else {
+          const lastReal = latestWord.lastChild
+          if (lastReal) createClass(lastReal, "latest")
+        }
+      }
+    } else if (latestLetter && isFirstLetter) {
+      if (latestWord.previousSibling) {
+        deleteClass(latestWord, "latest")
+        createClass(latestWord.previousSibling, "latest")
+        deleteClass(latestLetter, "latest")
+        const prevLast = latestWord.previousSibling.lastChild
+        if (prevLast) {
+          createClass(prevLast, "latest")
+          deleteClass(prevLast, "incorrect")
+          deleteClass(prevLast, "correct")
+        }
+      }
+      // if no previousSibling and we are at very start, do NOTHING
+    } else if (latestLetter && !isFirstLetter) {
+      // move back one letter in same word
+      deleteClass(latestLetter, "latest")
+      if (latestLetter.previousSibling) {
+        createClass(latestLetter.previousSibling, "latest")
+        deleteClass(latestLetter.previousSibling, "incorrect")
+        deleteClass(latestLetter.previousSibling, "correct")
+      }
+    } else if (!latestLetter) {
+      const last = latestWord.lastChild
+      if (last) {
+        createClass(last, "latest")
+        deleteClass(last, "incorrect")
+        deleteClass(last, "correct")
+      }
+    }
+  }
 })
 
 document.getElementById("newGameButton").addEventListener("click", () => {
