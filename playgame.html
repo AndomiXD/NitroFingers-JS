@@ -5,17 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NitroFingers</title>
     <link rel="stylesheet" href="style.css" />
+    <script defer src="sentences.js"></script>
+    <script defer src="script.js"></script>
   </head>
   <body>
     <h1>NitroFingers</h1>
 
     <div id="header">
-      <div id="playbuttons">
-        <!-- https://www.w3schools.com/html/html_links.asp  -->
-        <button id="playGameButton" onclick="document.location='playgame.html'">
-          Play Game!
-        </button>
+      <div id="duration"></div>
+      <div id="buttons">
+        <button id="newGameButton">New game</button>
       </div>
+    </div>
+    <div id="game" tabindex="0">
+      <div id="words"></div>
+      <div id="blinkCursor"></div>
     </div>
   </body>
 </html>

@@ -220,7 +220,7 @@ document.getElementById("game").addEventListener("keyup", (event) => {
           deleteClass(prevLast, "correct")
         }
       }
-      // if no previousSibling and we are at very start, do NOTHING
+      // if no previousSibling and we are at the very start, do NOTHING
     } else if (latestLetter && !isFirstLetter) {
       // move back one letter in same word
       deleteClass(latestLetter, "latest")
