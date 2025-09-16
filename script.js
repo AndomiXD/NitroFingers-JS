@@ -1,5 +1,4 @@
-console.log("script is on")
-//variables
+//global variables
 const wordsLength = words.length
 const gameDuration = 60
 window.gameStart = null
@@ -87,8 +86,6 @@ document.getElementById("game").addEventListener("keydown", (event) => {
     return
   }
 
-  console.log(press, expectedLetter)
-
   // start timer on first letter type
   if (!window.timer && letterCheck && lettersRegex.test(press)) {
     window.timer = setInterval(() => {
@@ -160,6 +157,11 @@ document.getElementById("game").addEventListener("keydown", (event) => {
       return
     }
 
+    //MAKE SURE THE PLAYER INPUTS A LETTER, NOT A SPACE IN THE MIDDLE OF A WORD!!!
+    if (expectedLetter !== " ") {
+      return
+    }
+
     let wordToValidate = latestWord
     if (
       latestLetter &&
@@ -169,26 +171,6 @@ document.getElementById("game").addEventListener("keydown", (event) => {
       latestWord.previousSibling
     ) {
       wordToValidate = latestWord.previousSibling
-    }
-
-    if (expectedLetter !== " ") {
-      // mark only the remaining letters (from latest onward) as incorrect
-      const wordToValidate = latestWord
-      let mark = false
-      wordToValidate.querySelectorAll(".letter") = () => {
-        if (letter === latestLetter) mark = true
-        if (mark && !letter.classList.contains("correct")) {
-          createClass(letter, "incorrect")
-        }
-      }
-
-      // move to the next word
-      deleteClass(latestWord, "latest")
-      createClass(latestWord.nextSibling, "latest")
-      if (latestLetter) {
-        deleteClass(latestLetter, "latest")
-      }
-      createClass(latestWord.nextSibling.firstChild, "latest")
     }
 
     // remove "latest" from the validated word and its latest letter
@@ -231,6 +213,7 @@ document.getElementById("game").addEventListener("keydown", (event) => {
       return
     }
 
+    //the one that appends extra letters that are incorrect
     const extraWrap = latestWord.querySelector(".extraLetters")
     if (extraWrap && extraWrap.lastChild) {
       const toRemove = extraWrap.lastChild
