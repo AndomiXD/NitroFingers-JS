@@ -113,9 +113,28 @@ document.getElementById("game").addEventListener("keyup", (event) => {
         // move to next letter in the same word
         createClass(latestLetter.nextSibling, "latest")
       }
+    } else {
+      if (!latestWord) return
+      const prevLatest = latestWord.querySelector(".letter.latest")
+      if (prevLatest) deleteClass(prevLatest, "latest")
+
+      let extraWrap = latestWord.querySelector(".extraLetters")
+      if (!extraWrap) {
+        extraWrap = document.createElement("span")
+        extraWrap.className = "extraLetters"
+        latestWord.appendChild(extraWrap)
+      }
+
+      const extraLetter = document.createElement("span")
+      extraLetter.innerHTML = press
+      extraLetter.className = "letter incorrect extra"
+      const anyLatest = document.querySelector(".letter.latest")
+      if (anyLatest) deleteClass(anyLatest, "latest")
+      createClass(extraLetter, "latest")
+
+      extraWrap.appendChild(extraLetter)
     }
   }
-  //----------
 })
 
 document.getElementById("newGameButton").addEventListener("click", () => {
