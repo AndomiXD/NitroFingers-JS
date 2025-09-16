@@ -11,7 +11,7 @@ const lettersRegex = /^[A-Za-z]$/
 //generate random words and their random index
 const randomWord = () => {
   const randomIndex = Math.ceil(Math.random() * wordsLength)
-  return words[randomIndex - 1]
+  return words[randomIndex - 1].toLowerCase()
 }
 
 //inject the randomly generated word to the html and slice them into individual letters
@@ -72,13 +72,13 @@ document.getElementById("game").addEventListener("keyup", (event) => {
   const letterCheck = press.length === 1 && press !== " "
   const spaceCheck = press === " "
   const backspaceCheck = press === "Backspace"
-  const isFirstLetter = latestLetter === latestWord?.firstChild
+  const firstLetterCheck = latestLetter === latestWord?.firstChild
 
   if (document.querySelector("#game.over")) {
     return
   }
 
-  console.log({ press, expectedLetter })
+  console.log(press, expectedLetter)
 
   // start timer on first letter type
   if (!window.timer && letterCheck && lettersRegex.test(press)) {
@@ -101,7 +101,7 @@ document.getElementById("game").addEventListener("keyup", (event) => {
   if (!latestWord && !spaceCheck && !backspaceCheck) return
 
   //letter check
-  if (letterCheck) {
+  if (letterCheck && lettersRegex.test(press)) {
     if (latestLetter) {
       createClass(
         latestLetter,
@@ -208,7 +208,7 @@ document.getElementById("game").addEventListener("keyup", (event) => {
           if (lastReal) createClass(lastReal, "latest")
         }
       }
-    } else if (latestLetter && isFirstLetter) {
+    } else if (latestLetter && firstLetterCheck) {
       if (latestWord.previousSibling) {
         deleteClass(latestWord, "latest")
         createClass(latestWord.previousSibling, "latest")
@@ -221,7 +221,7 @@ document.getElementById("game").addEventListener("keyup", (event) => {
         }
       }
       // if no previousSibling and we are at the very start, do NOTHING
-    } else if (latestLetter && !isFirstLetter) {
+    } else if (latestLetter && !firstLetterCheck) {
       // move back one letter in same word
       deleteClass(latestLetter, "latest")
       if (latestLetter.previousSibling) {

@@ -20,9 +20,14 @@ body {
   font-size: 45px;
   width: 75%;
   margin: 50px auto;
+  position: static;
 }
 p {
   color: #d1d0c5;
+}
+
+div#game {
+  outline: none;
 }
 
 div.word {
@@ -60,11 +65,14 @@ div#playbuttons {
   transition: all 0.2s ease;
 }
 
+.letter.latest {
+  font-size: 50px;
+  color: #7486d3;
+}
+
 .letter.correct {
   color: #ffffff;
-  transform: translateY(-2px);
 }
 .letter.incorrect {
   color: rgb(255, 0, 0);
-  transform: translateY(2px);
 }
