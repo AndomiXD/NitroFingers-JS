@@ -99,7 +99,7 @@ const wordsPerMinute = () => {
     }
   })
 
-  return correctWords.length / gameDuration
+  return (correctWords.length / gameDuration) * 100
 }
 
 //end game when timer runs out
@@ -108,7 +108,7 @@ const gameOver = () => {
   createClass(document.getElementById("game"), "over")
   const correctCount = correctLetters()
   const incorrectCount = incorrectLetters()
-  const WPM = wordsPerMinute()
+  const WPM = wordsPerMinute().toFixed(0)
   document.getElementById(
     "duration"
   ).innerHTML = `Game Over. <br \> Correct letters: ${correctCount} <br \> Inorrect letters: ${incorrectCount} <br \> Words per Minute (WPM): ${WPM}`
@@ -121,7 +121,7 @@ const newGame = () => {
 
   deleteClass(document.getElementById("game"), "over")
 
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 75; i++) {
     wordsEl.innerHTML += displayWord(randomWord())
   }
   const firstWord = document.querySelector(".word")
