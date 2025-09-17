@@ -24,7 +24,7 @@ const createClass = (element, name) => {
   if (!element) {
     return
   } // do nothing if the element is null
-  const classes = (element.className || "").split(/\s+/).filter(Boolean) // split the element current className string into an array of class names
+  const classes = (element.className || "").split(/\s+/) // split the element current className string into an array of class names
   if (!classes.includes(name)) {
     classes.push(name)
   }
@@ -36,16 +36,13 @@ const deleteClass = (element, name) => {
   if (!element) {
     return
   } // do nothing if the element is null
-  const classes = (element.className || "").split(/\s+/).filter(Boolean) // split the element current className string into an array of class names
+  const classes = (element.className || "").split(/\s+/) // split the element current className string into an array of class names
   element.className = classes.filter((c) => c !== name).join(" ")
 }
 
-//word per minute tracker/calculator
-const wordPerMinute = () => {
-  const words = [...document.querySelectorAll(".word")] //spread all the words
+//correct letters counter
+const correctLetters = () => {
   const lastWord = document.querySelector(".word.latest") //retrieve the last current word
-  // const lastsWordindex = words.indexOf(lastWord) //the index of it
-
   if (!lastWord) {
     //if it is NOT the last word, don't add it
     return 0
@@ -54,7 +51,25 @@ const wordPerMinute = () => {
   const letters = [...document.querySelectorAll(".letter.correct")]
   let count = 0
   for (i = 0; i < letters.length; i++) {
-    if (letters[i] !== 0) {
+    if (letters[i] !== 0 && letters[i] !== extraLetter) {
+      count++
+    }
+  }
+
+  return count
+}
+//incorrect letters counter
+const incorrectLetters = () => {
+  const lastWord = document.querySelector(".word.latest") //retrieve the last current word
+  if (!lastWord) {
+    //if it is NOT the last word, don't add it
+    return 0
+  }
+
+  const letters = [...document.querySelectorAll(".letter.incorrect")]
+  let count = 0
+  for (i = 0; i < letters.length; i++) {
+    if (letters[i] !== 0 && letters[i] !== extraLetter) {
       count++
     }
   }
@@ -62,20 +77,23 @@ const wordPerMinute = () => {
   return count
 }
 
+//words per minute counter
+// const wordsPerMinute = () => {}
+
 //end game when timer runs out
 const gameOver = () => {
   clearInterval(window.timer)
   createClass(document.getElementById("game"), "over")
-  const theNumber = wordPerMinute()
+  const correctCount = correctLetters()
+  const incorrectCount = incorrectLetters()
   document.getElementById(
     "duration"
-  ).innerHTML = `Game Over. Correct letters: ${theNumber}`
+  ).innerHTML = `Game Over. <br \> Correct letters: ${correctCount} <br \> Inorrect letters: ${incorrectCount}`
 }
 
 //initialise a new game by adding the randomly generated words to the HTML
 const newGame = () => {
   const wordsEl = document.getElementById("words")
-  wordsEl.style.marginTop = "0px" // reset scrolling
   wordsEl.innerHTML = "" //clear all words
 
   deleteClass(document.getElementById("game"), "over")
