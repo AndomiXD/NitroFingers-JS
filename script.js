@@ -18,7 +18,7 @@ const displayWord = (word) => {
     .join('</span><span class="letter">')}</span></div>`
 }
 
-//new class function that preventing duplicates
+//new class function that prevents duplicates
 const createClass = (element, name) => {
   if (!element) {
     return
