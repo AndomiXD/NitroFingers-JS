@@ -21,7 +21,17 @@ body {
   font-size: 45px;
   width: 75%;
   margin: 50px auto;
+  padding: 5px;
   position: static;
+  overflow-x: hidden;
+}
+
+body#indexhtml {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  height: 75vh;
 }
 p {
   color: #d1d0c5;
@@ -34,7 +44,7 @@ div#game {
   border: none;
   border-radius: 8px;
   box-shadow: 1px 1px 15px black;
-  padding: 15px;
+  padding: 8px;
   text-align: center;
 }
 

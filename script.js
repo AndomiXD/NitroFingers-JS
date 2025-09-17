@@ -207,7 +207,7 @@ document.getElementById("game").addEventListener("keydown", (event) => {
       const extraLetter = document.createElement("span")
       extraLetter.innerHTML = press
       extraLetter.className = "letter incorrect extra"
-      const anyLatest = latestWord.querySelector(".letter.latest")
+      const anyLatest = document.querySelector(".letter.latest")
 
       if (anyLatest) {
         deleteClass(anyLatest, "latest")

@@ -17,7 +17,8 @@
 
 ***
 ### ***Screenshots***
-![NitroFingers' Layout](<Screenshot 2025-09-16 124530.jpg>)
+![NitroFingers'  index.html](<indexhtml.jpg>)
+![NitroFingers'  playgame.html](<playgamehtml.png>)
 
 ### ***Future Updates***
 
@@ -30,3 +31,5 @@
 
 ### ***Credits***
 ##### Staying groovy to help my sanity: [Spotify](https://open.spotify.com/)
+##### My inspiration: [MonkeyType](https://monkeytype.com/)
+##### The ones who made it all clear: [StackOverflow](https://stackoverflow.com/questions)
