@@ -30,18 +30,18 @@ const createClass = (element, name) => {
   element.className = classes.join(" ")
 }
 
-//delete class function that preventing duplicates
+//delete class function that prevents duplicates
 const deleteClass = (element, name) => {
   if (!element) {
     return
-  } // do nothing if the element is null
+  }
   const classes = (element.className || "").split(/\s+/) // split the element current className string into an array of class names
   element.className = classes.filter((c) => c !== name).join(" ")
 }
 
 //correct letters counter
 const correctLetters = () => {
-  const lastWord = document.querySelector(".word.latest") //retrieve the last current word
+  const lastWord = document.querySelector(".word.latest")
   if (!lastWord) {
     //if it is NOT the last word, don't add it
     return 0
@@ -49,7 +49,7 @@ const correctLetters = () => {
 
   const letters = [...document.querySelectorAll(".letter.correct")]
   let count = 0
-  for (i = 0; i < letters.length; i++) {
+  for (let i = 0; i < letters.length; i++) {
     if (letters[i] !== 0 && letters[i] !== " ") {
       count++
     }
@@ -57,9 +57,10 @@ const correctLetters = () => {
 
   return count
 }
+
 //incorrect letters counter
 const incorrectLetters = () => {
-  const lastWord = document.querySelector(".word.latest") //retrieve the last current word
+  const lastWord = document.querySelector(".word.latest")
   if (!lastWord) {
     //if it is NOT the last word, don't add it
     return 0
@@ -67,7 +68,7 @@ const incorrectLetters = () => {
 
   const letters = [...document.querySelectorAll(".letter.incorrect")]
   let count = 0
-  for (i = 0; i < letters.length; i++) {
+  for (let i = 0; i < letters.length; i++) {
     if (letters[i] !== 0 && letters[i] !== " ") {
       count++
     }
@@ -115,6 +116,7 @@ const gameOver = () => {
 }
 
 //initialise a new game by adding the randomly generated words to the HTML
+
 const newGame = () => {
   const wordsEl = document.getElementById("words")
   wordsEl.innerHTML = "" //clear all words
@@ -134,6 +136,7 @@ const newGame = () => {
   }
 
   document.getElementById("duration").innerHTML = "Timer: " + gameDuration + "s"
+
   window.timer = null
   window.gameStart = null
 }
@@ -141,9 +144,12 @@ const newGame = () => {
 document.getElementById("game").addEventListener("keydown", (event) => {
   const press = event.key
   let latestLetter = document.querySelector(".letter.latest")
+
   let latestWord = document.querySelector(".word.latest")
+
   const expectedLetter = latestLetter?.innerHTML || " "
   const letterCheck = press.length === 1 && press !== " "
+
   const spaceCheck = press === " "
   const backspaceCheck = press === "Backspace"
   const firstLetterCheck = latestLetter === latestWord?.firstChild
@@ -169,7 +175,6 @@ document.getElementById("game").addEventListener("keydown", (event) => {
       document.getElementById("duration").innerHTML = "Timer: " + timeLeft + "s"
     }, 1000)
   }
-
   // do nothing if it's literally nothing
   if (!latestWord && !spaceCheck && !backspaceCheck) {
     return
@@ -185,36 +190,9 @@ document.getElementById("game").addEventListener("keydown", (event) => {
       deleteClass(latestLetter, "latest")
 
       if (latestLetter.nextSibling) {
-        // move to next letter in the same word
+        // move to next letter in the same word and name it latest
         createClass(latestLetter.nextSibling, "latest")
       }
-    } else {
-      if (!latestWord) {
-        return
-      }
-      const prevLatest = latestWord.querySelector(".letter.latest")
-      if (prevLatest) {
-        deleteClass(prevLatest, "latest")
-      }
-
-      let extraWrap = latestWord.querySelector(".extraLetters")
-      if (!extraWrap) {
-        extraWrap = document.createElement("span")
-        extraWrap.className = "extraLetters"
-        latestWord.appendChild(extraWrap)
-      }
-
-      const extraLetter = document.createElement("span")
-      extraLetter.innerHTML = press
-      extraLetter.className = "letter incorrect extra"
-      const anyLatest = latestWord.querySelector(".letter.latest")
-
-      if (anyLatest) {
-        deleteClass(anyLatest, "latest")
-      }
-      createClass(extraLetter, "latest")
-
-      extraWrap.appendChild(extraLetter)
     }
   }
 
@@ -239,7 +217,6 @@ document.getElementById("game").addEventListener("keydown", (event) => {
     ) {
       wordToValidate = latestWord.previousSibling
     }
-
     // remove "latest" from the validated word and its latest letter
     deleteClass(wordToValidate, "latest")
     const currentLatestLetter = wordToValidate.querySelector(".letter.latest")
@@ -247,11 +224,6 @@ document.getElementById("game").addEventListener("keydown", (event) => {
       deleteClass(currentLatestLetter, "latest")
     }
 
-    // remove any extra letters for the word being left if the player added extra letters which are supposed to be incorrect
-    const extras = wordToValidate.querySelector(".extraLetters")
-    if (extras) {
-      extras.remove()
-    }
     let next = null
     if (wordToValidate === latestWord) {
       next = latestWord.nextSibling
@@ -280,30 +252,7 @@ document.getElementById("game").addEventListener("keydown", (event) => {
       return
     }
 
-    //the one that appends extra letters that are incorrect
-    const extraWrap = latestWord.querySelector(".extraLetters")
-    if (extraWrap && extraWrap.lastChild) {
-      const letterToRemove = extraWrap.lastChild
-      const wasLatestLetter = letterToRemove.className.includes("latest")
-      extraWrap.removeChild(letterToRemove)
-      if (!extraWrap.hasChildNodes()) {
-        extraWrap.remove()
-      }
-
-      if (wasLatestLetter) {
-        const newExtraLast = latestWord.querySelector(
-          ".extraLetters:last-child .letter:last-child"
-        )
-        if (newExtraLast) {
-          createClass(newExtraLast, "latest")
-        } else {
-          const lastReal = latestWord.lastChild
-          if (lastReal) {
-            createClass(lastReal, "latest")
-          }
-        }
-      }
-    } else if (latestLetter && firstLetterCheck) {
+    if (latestLetter && firstLetterCheck) {
       if (latestWord.previousSibling) {
         deleteClass(latestWord, "latest")
         createClass(latestWord.previousSibling, "latest")
