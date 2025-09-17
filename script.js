@@ -24,6 +24,7 @@ const createClass = (element, name) => {
     return
   } // do nothing if the element is null
   const classes = (element.className || "").split(/\s+/) // split the element current className string into an array of class names
+
   if (!classes.includes(name)) {
     classes.push(name)
   }
@@ -36,12 +37,13 @@ const deleteClass = (element, name) => {
     return
   }
   const classes = (element.className || "").split(/\s+/) // split the element current className string into an array of class names
+
   element.className = classes.filter((c) => c !== name).join(" ")
 }
 
 //correct letters counter
 const correctLetters = () => {
-  const lastWord = document.querySelector(".word.latest")
+  const lastWord = document.querySelector(".word.latest") //retrieve the last current word
   if (!lastWord) {
     //if it is NOT the last word, don't add it
     return 0
@@ -54,13 +56,12 @@ const correctLetters = () => {
       count++
     }
   }
-
   return count
 }
 
 //incorrect letters counter
 const incorrectLetters = () => {
-  const lastWord = document.querySelector(".word.latest")
+  const lastWord = document.querySelector(".word.latest") //retrieve the last current word
   if (!lastWord) {
     //if it is NOT the last word, don't add it
     return 0
@@ -73,7 +74,6 @@ const incorrectLetters = () => {
       count++
     }
   }
-
   return count
 }
 
@@ -116,7 +116,6 @@ const gameOver = () => {
 }
 
 //initialise a new game by adding the randomly generated words to the HTML
-
 const newGame = () => {
   const wordsEl = document.getElementById("words")
   wordsEl.innerHTML = "" //clear all words
@@ -136,7 +135,6 @@ const newGame = () => {
   }
 
   document.getElementById("duration").innerHTML = "Timer: " + gameDuration + "s"
-
   window.timer = null
   window.gameStart = null
 }
@@ -144,12 +142,9 @@ const newGame = () => {
 document.getElementById("game").addEventListener("keydown", (event) => {
   const press = event.key
   let latestLetter = document.querySelector(".letter.latest")
-
   let latestWord = document.querySelector(".word.latest")
-
   const expectedLetter = latestLetter?.innerHTML || " "
   const letterCheck = press.length === 1 && press !== " "
-
   const spaceCheck = press === " "
   const backspaceCheck = press === "Backspace"
   const firstLetterCheck = latestLetter === latestWord?.firstChild
@@ -175,6 +170,7 @@ document.getElementById("game").addEventListener("keydown", (event) => {
       document.getElementById("duration").innerHTML = "Timer: " + timeLeft + "s"
     }, 1000)
   }
+
   // do nothing if it's literally nothing
   if (!latestWord && !spaceCheck && !backspaceCheck) {
     return
@@ -185,18 +181,18 @@ document.getElementById("game").addEventListener("keydown", (event) => {
     if (latestLetter) {
       createClass(
         latestLetter,
-        press === expectedLetter ? "correct" : "incorrect" //is the letter correct or not?
+        press === expectedLetter ? "correct" : "incorrect" //is the letter correct or not? basically where the magic happens
       )
       deleteClass(latestLetter, "latest")
 
       if (latestLetter.nextSibling) {
-        // move to next letter in the same word and name it latest
+        // move to next letter in the same word
         createClass(latestLetter.nextSibling, "latest")
       }
     }
   }
 
-  //  space input
+  // space input
   if (spaceCheck) {
     if (!latestWord) {
       return
@@ -217,6 +213,7 @@ document.getElementById("game").addEventListener("keydown", (event) => {
     ) {
       wordToValidate = latestWord.previousSibling
     }
+
     // remove "latest" from the validated word and its latest letter
     deleteClass(wordToValidate, "latest")
     const currentLatestLetter = wordToValidate.querySelector(".letter.latest")
@@ -266,8 +263,8 @@ document.getElementById("game").addEventListener("keydown", (event) => {
       }
       // if no previousSibling and we are at the very start, do NOTHING
     } else if (latestLetter && !firstLetterCheck) {
-      // move back one letter in same word
       deleteClass(latestLetter, "latest")
+      // move back one letter in same word
       if (latestLetter.previousSibling) {
         createClass(latestLetter.previousSibling, "latest")
         deleteClass(latestLetter.previousSibling, "incorrect")
