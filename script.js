@@ -1,6 +1,6 @@
 //global variables
 const wordsLength = words.length
-const gameDuration = 60
+const gameDuration = 5
 window.gameStart = null
 window.timer = null
 window.pauseTime = 0
@@ -40,11 +40,36 @@ const deleteClass = (element, name) => {
   element.className = classes.filter((c) => c !== name).join(" ")
 }
 
+//word per minute tracker/calculator
+const wordPerMinute = () => {
+  const words = [...document.querySelectorAll(".word")] //spread all the words
+  const lastWord = document.querySelector(".word.latest") //retrieve the last current word
+  // const lastsWordindex = words.indexOf(lastWord) //the index of it
+
+  if (!lastWord) {
+    //if it is NOT the last word, don't add it
+    return 0
+  }
+
+  const letters = [...document.querySelectorAll(".letter.correct")]
+  let count = 0
+  for (i = 0; i < letters.length; i++) {
+    if (letters[i] !== 0) {
+      count++
+    }
+  }
+
+  return count
+}
+
 //end game when timer runs out
 const gameOver = () => {
   clearInterval(window.timer)
   createClass(document.getElementById("game"), "over")
-  document.getElementById("duration").innerHTML = "Game Over"
+  const theNumber = wordPerMinute()
+  document.getElementById(
+    "duration"
+  ).innerHTML = `Game Over. Correct letters: ${theNumber}`
 }
 
 //initialise a new game by adding the randomly generated words to the HTML
@@ -55,7 +80,7 @@ const newGame = () => {
 
   deleteClass(document.getElementById("game"), "over")
 
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 10; i++) {
     wordsEl.innerHTML += displayWord(randomWord())
   }
   const firstWord = document.querySelector(".word")
@@ -192,7 +217,7 @@ document.getElementById("game").addEventListener("keydown", (event) => {
       next = latestWord
     }
 
-    // make sure next word exists. if not, append one and check and display it as incorrect
+    // make sure next word exists. if not, append one and display it (that's if the player reaches the end)
     if (!next) {
       const temp = document.createElement("div")
       temp.innerHTML = displayWord(randomWord())
