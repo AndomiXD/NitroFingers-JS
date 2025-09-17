@@ -1,9 +1,8 @@
 //global variables
 const wordsLength = words.length
-const gameDuration = 5
+const gameDuration = 60
 window.gameStart = null
 window.timer = null
-window.pauseTime = 0
 const lettersRegex = /^[A-Za-z]$/
 
 //generate random words and their random index
@@ -51,7 +50,7 @@ const correctLetters = () => {
   const letters = [...document.querySelectorAll(".letter.correct")]
   let count = 0
   for (i = 0; i < letters.length; i++) {
-    if (letters[i] !== 0 && letters[i] !== extraLetter) {
+    if (letters[i] !== 0 && letters[i] !== " ") {
       count++
     }
   }
@@ -69,7 +68,7 @@ const incorrectLetters = () => {
   const letters = [...document.querySelectorAll(".letter.incorrect")]
   let count = 0
   for (i = 0; i < letters.length; i++) {
-    if (letters[i] !== 0 && letters[i] !== extraLetter) {
+    if (letters[i] !== 0 && letters[i] !== " ") {
       count++
     }
   }
@@ -78,7 +77,30 @@ const incorrectLetters = () => {
 }
 
 //words per minute counter
-// const wordsPerMinute = () => {}
+const wordsPerMinute = () => {
+  const getwords = [...document.querySelectorAll(".word")]
+  const lastWord = document.querySelector(".word.latest")
+
+  if (!lastWord) {
+    //if it is NOT the last word, don't add it
+    return 0
+  }
+
+  const lastWordindex = getwords.indexOf(lastWord + 1)
+  const typedWords = getwords.slice(0, lastWordindex)
+  const correctWords = typedWords.filter((word) => {
+    const letters = [...word.children]
+    for (let i = 0; i < letters.length; i++) {
+      if (letters[i].classList.contains("correct")) {
+        return true
+      } else {
+        return false
+      }
+    }
+  })
+
+  return correctWords.length / gameDuration
+}
 
 //end game when timer runs out
 const gameOver = () => {
@@ -86,9 +108,10 @@ const gameOver = () => {
   createClass(document.getElementById("game"), "over")
   const correctCount = correctLetters()
   const incorrectCount = incorrectLetters()
+  const WPM = wordsPerMinute()
   document.getElementById(
     "duration"
-  ).innerHTML = `Game Over. <br \> Correct letters: ${correctCount} <br \> Inorrect letters: ${incorrectCount}`
+  ).innerHTML = `Game Over. <br \> Correct letters: ${correctCount} <br \> Inorrect letters: ${incorrectCount} <br \> Words per Minute (WPM): ${WPM}`
 }
 
 //initialise a new game by adding the randomly generated words to the HTML
@@ -98,7 +121,7 @@ const newGame = () => {
 
   deleteClass(document.getElementById("game"), "over")
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 50; i++) {
     wordsEl.innerHTML += displayWord(randomWord())
   }
   const firstWord = document.querySelector(".word")
@@ -184,7 +207,8 @@ document.getElementById("game").addEventListener("keydown", (event) => {
       const extraLetter = document.createElement("span")
       extraLetter.innerHTML = press
       extraLetter.className = "letter incorrect extra"
-      const anyLatest = document.querySelector(".letter.latest")
+      const anyLatest = latestWord.querySelector(".letter.latest")
+
       if (anyLatest) {
         deleteClass(anyLatest, "latest")
       }
@@ -259,14 +283,14 @@ document.getElementById("game").addEventListener("keydown", (event) => {
     //the one that appends extra letters that are incorrect
     const extraWrap = latestWord.querySelector(".extraLetters")
     if (extraWrap && extraWrap.lastChild) {
-      const toRemove = extraWrap.lastChild
-      const wasLatest = toRemove.className.includes("latest")
-      extraWrap.removeChild(toRemove)
+      const letterToRemove = extraWrap.lastChild
+      const wasLatestLetter = letterToRemove.className.includes("latest")
+      extraWrap.removeChild(letterToRemove)
       if (!extraWrap.hasChildNodes()) {
         extraWrap.remove()
       }
 
-      if (wasLatest) {
+      if (wasLatestLetter) {
         const newExtraLast = latestWord.querySelector(
           ".extraLetters:last-child .letter:last-child"
         )
