@@ -249,6 +249,7 @@ document.getElementById("game").addEventListener("keydown", (event) => {
       return
     }
 
+    // moving back at the FIRST letter of a word
     if (latestLetter && firstLetterCheck) {
       if (latestWord.previousSibling) {
         deleteClass(latestWord, "latest")
@@ -261,16 +262,16 @@ document.getElementById("game").addEventListener("keydown", (event) => {
           deleteClass(prevLast, "correct")
         }
       }
-      // if no previousSibling and we are at the very start, do NOTHING
     } else if (latestLetter && !firstLetterCheck) {
       deleteClass(latestLetter, "latest")
-      // move back one letter in same word
+      // move back one letter in SAME word
       if (latestLetter.previousSibling) {
         createClass(latestLetter.previousSibling, "latest")
         deleteClass(latestLetter.previousSibling, "incorrect")
         deleteClass(latestLetter.previousSibling, "correct")
       }
     } else if (!latestLetter) {
+      // we are at the end of a word; rather AFTER the end of a word. it isn't on any letter
       const last = latestWord.lastChild
       if (last) {
         createClass(last, "latest")
